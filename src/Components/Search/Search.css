@@ -1,0 +1,17 @@
+.search-bar {
+  padding: 0.5rem 1rem;
+  margin-left: 1rem;
+  width: 70%;
+  max-width: 70%;
+  border: 3px solid #e54a83;
+  background-color: floralwhite;
+  color: black;
+  border-radius: 16px;
+
+  width: clamp(12rem, 100%, 28rem);
+
+  flex-wrap: nowrap;
+}
+input:focus {
+  border: 3px solid #4ac1e5;
+}

@@ -1,0 +1,22 @@
+.r-wrapper {
+  background-image: url(https://file.hstatic.net/200000411281/file/nen_1_d9b188f289834a59b6db9ded098262c8.jpg);
+}
+
+.card {
+  gap: 0.6rem;
+  padding: 1rem;
+  border-radius: 10px;
+  max-width: max-content;
+  margin: auto;
+  transition: all 300ms ease-in;
+  position: relative;
+  z-index: 0;
+}
+
+.card > img {
+  width: 100%;
+  max-width: 15rem;
+  width: 15rem;
+  height: 10rem;
+  border-radius: 10px;
+}
