@@ -20,7 +20,7 @@ const Header = () => {
           {/* menu  */}
           <div className="h-menu flex gap-y-8 justify-center items-center flex-wrap gap-8">
             <a>Liên Hệ</a>
-            <a>CSKH: cucghach6lo@gmail.com</a>
+            <Link to="/cart">Cart</Link>
             <a>65 Dương Tôn Hải, Đà Nẵng</a>
             <div className="flex gap-4">
               <button className="button">

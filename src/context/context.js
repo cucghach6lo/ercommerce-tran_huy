@@ -16,10 +16,6 @@ function MyContext({ children }) {
     }
   };
 
-  // const getCategory =async()=>{
-  //   const response = await axios.get ("")
-  // }
-
   const getDataProducts = async () => {
     const response = await axios.get(
       "http://localhost:3004/products?_expand=categorys"
@@ -28,10 +24,6 @@ function MyContext({ children }) {
       setListProducts(response.data);
     }
   };
-  
-  const getDataCategory = async()=>{
-
-  }
 
   useEffect(() => {
     getDataUser();

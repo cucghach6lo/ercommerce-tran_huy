@@ -1,93 +1,88 @@
-import React, { useContext } from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input } from "antd";
-import { Context } from "../../context/context";
+import React, { useState } from "react";
+import "./Login.css";
 import { Link } from "react-router-dom";
+import Logout from "../Logout/Logout";
+import ForgotPassword from "../ForgotPassword/ForgotPassword";
 
-const App = () => {
-  const { listUser } = useContext(Context);
+const LoginPage = () => {
+  const [fullname, setFullname] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
 
-  console.log(listUser);
-
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const handleLoginPage = (e) => {
+    e.preventDefault();
+    const newUser = {
+      fullname: fullname,
+      username: username,
+      password: password,
+      gender: gender,
+      phone: phone,
+      email: email,
+      address: address,
+    };
   };
-  return (
-    <div className="l-wrapper">
-      <div className="flex gap-y-8  items-center flex-wrap w-full p-6 px-4 py-4 justify-between">
-        <Link to="/">
-          <img
-            src="https://theme.hstatic.net/200000411281/1000949882/14/logo.png?v=229"
-            width={300}
-          />
-        </Link>
-        <div className="h-menu flex gap-y-8 justify-center items-center flex-wrap gap-8">
-          <a>Liên Hệ</a>
-          <a>CSKH: cucghach6lo@gmail.com</a>
-          <a>65 Dương Tôn Hải, Đà Nẵng</a>
-          <button className="button">
-            <Link to="/ForgotPassword">Quên Mật Khẩu</Link>
-          </button>
-        </div>
-      </div>
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{
-          remember: true,
-        }}
-        onFinish={onFinish}
-      >
-        <Form.Item
-          name="username"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Username!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Password!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-        </Form.Item>
 
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button bg-slate-600"
-          >
-            Đăng Nhập
-          </Button>
-          Or{" "}
-          <Link to="/register" className="text-blue-600">
-            Đăng Ký
-          </Link>
-        </Form.Item>
-      </Form>
-    </div>
+  return (
+    <section className="login-container">
+      {/* ...Giao diện hiện tại của trang đăng nhập... */}
+      <div className="login-title"> Log in</div>
+      <form onSubmit={handleLoginPage}>
+        {/* ...Các trường nhập liệu và nút submit... */}
+        <label>FULLNAME</label>
+        <input
+          type="text"
+          placeholder="Enter your fullname"
+          onChange={(e) => setFullname(e.target.value)}
+        />
+        <label>USERNAME</label>
+        <input
+          type="text"
+          placeholder="Enter your username"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <label>PASSWORD</label>
+        <input
+          type="password"
+          placeholder="Enter your password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <label>GENDER</label>
+        <input
+          type="text"
+          placeholder="Enter your gender"
+          onChange={(e) => setGender(e.target.value)}
+        />
+        <label>PHONE</label>
+        <input
+          type="text"
+          placeholder="Enter your phone"
+          onChange={(e) => setPhone(e.target.value)}
+        />
+        <label>EMAIL</label>
+        <input
+          type="text"
+          placeholder="Enter your email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label>ADDRESS</label>
+        <input
+          type="text"
+          placeholder="Enter your address"
+          onChange={(e) => setAddress(e.target.value)}
+        />
+        <button type="submit"> Continue </button>
+      </form>
+      {/* Liên kết đến trang Logout */}
+      <Link to="/logout">Đăng Xuất</Link>
+
+      {/* Liên kết đến trang Forgot Password */}
+      <Link to="/forgotpassword">Quên Mật Khẩu</Link>
+    </section>
   );
 };
-export default App;
+
+export default LoginPage;

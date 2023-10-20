@@ -1,27 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../context/context";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Search.css";
 
 const SearchCard = () => {
   const { listProducts } = useContext(Context);
-  const { id } = useParams();
+
   const [search, setSearch] = useState("");
   const [searchResults, setSearchResults] = useState([]);
 
-  const filteredProducts = listProducts.filter((product) => {
-    const queryLower = search.toLowerCase();
-    const { name, category } = product;
-
-    const nameMatch = name.toLowerCase().includes(queryLower);
-    const categoryIdMatch = category?.toLowerCase().includes(queryLower);
-
-    return nameMatch || categoryIdMatch;
-  });
-
   useEffect(() => {
+    const queryLower = search.toLowerCase();
+
+    const filteredProducts = listProducts.filter((product) => {
+      const { name, category } = product;
+      const nameMatch = name.toLowerCase().includes(queryLower);
+      const categoryIdMatch = category?.toLowerCase().includes(queryLower);
+      return nameMatch || categoryIdMatch;
+    });
+
     setSearchResults(filteredProducts);
-  }, [filteredProducts]);
+  }, [search, listProducts]);
 
   return (
     <div className="bg-red-200">
@@ -36,7 +35,7 @@ const SearchCard = () => {
 
       {search.trim() !== "" ? (
         <div className="p-6 flex gap-y-6 justify-center items-center flex-wrap">
-          {searchResults.map((product) => {
+          {searchResults.slice(0, 4).map((product) => {
             return (
               <div
                 key={product.id}

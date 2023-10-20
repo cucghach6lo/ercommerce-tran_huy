@@ -11,6 +11,7 @@ import ForgotPassword from "./Components/ForgotPassword/ForgotPassword";
 import PropertyCard from "./Components/PropertyCard/PropertyCard";
 import Admin from "./Components/Role/Admin/Admin";
 import Seller from "./Components/Role/Seller/Seller";
+import Cart from "./Components/Cart/Cart";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route path="/" element={<Website />} />
               <Route path="/card/:id" element={<PropertyCard />} />
+              <Route path="/cart" element={<Cart />} />
 
               {/* <Route pat="/admin" element{<Admin />}> */}
             </Route>
