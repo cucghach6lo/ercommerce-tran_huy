@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, Form, Input, Select } from "antd";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 const { Option } = Select;
 
 const formItemLayout = {
@@ -66,7 +67,7 @@ const App = () => {
       setAutoCompleteResult([]);
     } else {
       setAutoCompleteResult(
-        [".com", ".org", ".net"].map((domain) => `${value}${domain}`)
+        [".com", ".org", ".net", ".yahhoo"].map((domain) => `${value}${domain}`)
       );
     }
   };
@@ -78,8 +79,9 @@ const App = () => {
   const postData = async (data) => {
     const responsive = await axios.post("http://localhost:3004/users", {
       email: data.email,
+      username: data.username,
       password: data.password,
-      nickname: data.nickname,
+      name: data.name,
       address: data.address,
       phone: data.phone,
       gender: data.gender,
@@ -93,14 +95,15 @@ const App = () => {
     console.log("Received values of form: ", values);
     const data = {
       email: values.email,
+      username: values.username,
       password: values.password,
-      nickname: values.nickname,
+      name: values.name,
       address: values.address,
       phone: values.phone,
       gender: values.gender,
     };
     postData(values);
-    alert("xong");
+    toast.success("Đăng ký thành công");
   };
 
   return (
@@ -191,7 +194,7 @@ const App = () => {
             </Form.Item>
 
             <Form.Item
-              name="nickname"
+              name="username"
               label="Tài Khoản"
               tooltip="Tài khoản của bạn là:"
               rules={[
@@ -206,20 +209,31 @@ const App = () => {
             </Form.Item>
 
             <Form.Item
+              name="name"
+              label="Tên"
+              tooltip="Tên của bạn là:"
+              rules={[
+                {
+                  required: true,
+                  message: "Vui lòng nhập Tên của bạn!",
+                  whitespace: true,
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+
+            <Form.Item
               name="address"
               label="Địa chỉ"
               rules={[
                 {
-                  type: "array",
                   required: true,
                   message: "Vui lòng nhập địa chỉ của bạn!",
                 },
               ]}
             >
-              <Input
-                style={{ width: "100%" }}
-                placeholder="Tên đường, Quận-Huyện, Thành Phố"
-              ></Input>
+              <Input placeholder="Địa chỉ" />
             </Form.Item>
 
             <Form.Item

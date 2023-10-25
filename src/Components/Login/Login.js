@@ -1,88 +1,171 @@
 import React, { useState } from "react";
-import "./Login.css";
-import { Link } from "react-router-dom";
-import Logout from "../Logout/Logout";
-import ForgotPassword from "../ForgotPassword/ForgotPassword";
+import { Button, Checkbox, Form, Input } from "antd";
+import { Link, useNavigate } from "react-router-dom"; // Thêm useNavigate vào danh sách import
+import axios from "axios";
+import { toast } from "react-toastify";
 
-const LoginPage = () => {
-  const [fullname, setFullname] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [gender, setGender] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
+const Login = () => {
+  const [useUsername, setUsername] = useState("");
+  const [usePassword, setPassword] = useState("");
+  const navigate = useNavigate(); // Lấy hàm chuyển hướng từ hook
+  const [role, setRole] = useState(""); // Thêm biến role để theo dõi vai trò
 
-  const handleLoginPage = (e) => {
-    e.preventDefault();
-    const newUser = {
-      fullname: fullname,
-      username: username,
-      password: password,
-      gender: gender,
-      phone: phone,
-      email: email,
-      address: address,
-    };
+  const submitHandle = () => {
+    if (!useUsername || !usePassword) {
+      // Check if username or password is empty, and display a "Please enter username and password" toast
+      toast.error("Yêu cầu nhập tài khoản và mật khẩu");
+      return;
+    }
+
+    axios
+      .get("http://localhost:3004/users")
+      .then((response) => {
+        const data = response.data;
+        let userFound = false; // Flag to check if a user with the given credentials was found
+        data.forEach((user) => {
+          const username = user.username;
+          const password = user.password;
+          const name = user.name;
+          const email = user.email;
+          if (username === useUsername && password === usePassword) {
+            userFound = true;
+            setRole(user.role);
+            localStorage.setItem("isLogin", username);
+            localStorage.setItem("isName", name);
+            localStorage.setItem("isEmail", email);
+          }
+        });
+
+        if (userFound) {
+          if (role === "admin") {
+            toast.success("Đăng nhập thành công");
+            navigate("/admin");
+          } else if (role === "seller") {
+            toast.success("Đăng nhập thành công");
+            navigate("/seller");
+          } else if (role === "customer") {
+            toast.success("Đăng nhập thành công");
+            navigate("/");
+          }
+          // If no matching user was found, display a "Sai tài khoản hoặc mật khẩu" toast
+        } else {
+          toast.error("Sai tài khoản hoặc mật khẩu, vui lòng đăng nhập lại");
+          console.log("====================================");
+          console.log("abcd");
+          console.log("====================================");
+        }
+      })
+      .catch((error) => {
+        console.log("Lỗi khi gửi yêu cầu get: ", error);
+        toast.error("");
+      });
   };
 
   return (
-    <section className="login-container">
-      {/* ...Giao diện hiện tại của trang đăng nhập... */}
-      <div className="login-title"> Log in</div>
-      <form onSubmit={handleLoginPage}>
-        {/* ...Các trường nhập liệu và nút submit... */}
-        <label>FULLNAME</label>
-        <input
-          type="text"
-          placeholder="Enter your fullname"
-          onChange={(e) => setFullname(e.target.value)}
-        />
-        <label>USERNAME</label>
-        <input
-          type="text"
-          placeholder="Enter your username"
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <label>PASSWORD</label>
-        <input
-          type="password"
-          placeholder="Enter your password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <label>GENDER</label>
-        <input
-          type="text"
-          placeholder="Enter your gender"
-          onChange={(e) => setGender(e.target.value)}
-        />
-        <label>PHONE</label>
-        <input
-          type="text"
-          placeholder="Enter your phone"
-          onChange={(e) => setPhone(e.target.value)}
-        />
-        <label>EMAIL</label>
-        <input
-          type="text"
-          placeholder="Enter your email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <label>ADDRESS</label>
-        <input
-          type="text"
-          placeholder="Enter your address"
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <button type="submit"> Continue </button>
-      </form>
-      {/* Liên kết đến trang Logout */}
-      <Link to="/logout">Đăng Xuất</Link>
+    <div>
+      <div className="h-container flex gap-y-8 items-center flex-wrap w-full p-6 px-4 py-4 justify-between">
+        {/* left side  */}
+        <div className="left-side">
+          <Link to="/">
+            <img
+              src="https://theme.hstatic.net/200000411281/1000949882/14/logo.png?v=229"
+              width={300}
+              alt="Logo"
+            />
+          </Link>
+        </div>
+        {/* right side  */}
+        <div className="right-side justify-between">
+          {/* menu  */}
+          <div className="h-menu flex gap-y-8 justify-center items-center flex-wrap gap-8">
+            <a>Liên Hệ</a>
+            <a>65 Dương Tôn Hải, Đà Nẵng</a>
+          </div>
+        </div>
+      </div>
+      <div className="">
+        <Form
+          name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          style={{
+            maxWidth: 600,
+          }}
+          initialValues={{
+            remember: true,
+          }}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập Tài Khoản!",
+              },
+            ]}
+          >
+            <Input
+              value={useUsername}
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              placeholder="Tài Khoản"
+            />
+          </Form.Item>
 
-      {/* Liên kết đến trang Forgot Password */}
-      <Link to="/forgotpassword">Quên Mật Khẩu</Link>
-    </section>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập Mật Khẩu!",
+              },
+            ]}
+          >
+            <Input.Password
+              value={usePassword}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Mật Khẩu"
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="remember"
+            valuePropName="checked"
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <div>
+              <Checkbox>Lưu Mật Khẩu</Checkbox>
+              <Link to="/forgotpassword">Quên Mật Khẩu</Link>
+            </div>
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              offset: 8,
+              span: 16,
+            }}
+          >
+            <Button
+              type="submit"
+              className="bg-slate-500"
+              onClick={submitHandle}
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </div>
   );
 };
 
-export default LoginPage;
+export default Login;

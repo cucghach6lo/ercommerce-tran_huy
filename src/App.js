@@ -12,6 +12,9 @@ import PropertyCard from "./Components/PropertyCard/PropertyCard";
 import Admin from "./Components/Role/Admin/Admin";
 import Seller from "./Components/Role/Seller/Seller";
 import Cart from "./Components/Cart/Cart";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Profile from "./Components/Profile/Profile";
 
 function App() {
   return (
@@ -23,8 +26,7 @@ function App() {
               <Route path="/" element={<Website />} />
               <Route path="/card/:id" element={<PropertyCard />} />
               <Route path="/cart" element={<Cart />} />
-
-              {/* <Route pat="/admin" element{<Admin />}> */}
+              <Route path="/profile" element={<Profile />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
@@ -34,6 +36,18 @@ function App() {
           </Routes>
         </Suspense>
       </BrowserRouter>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </div>
   );
 }

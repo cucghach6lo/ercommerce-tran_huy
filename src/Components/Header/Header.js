@@ -1,8 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
 
+const logOut = () => {
+  localStorage.removeItem("isLogin");
+  window.location.href = "/";
+};
+
+const isName = () => {
+  localStorage.getItem("isName");
+};
 const Header = () => {
+  const isLogin = localStorage.getItem("isLogin");
+
   return (
     <div className="h-wrapper bg-blue-100">
       <div className="h-container flex gap-y-8  items-center flex-wrap w-full p-6 px-4 py-4 justify-between">
@@ -22,14 +32,25 @@ const Header = () => {
             <a>Liên Hệ</a>
             <Link to="/cart">Cart</Link>
             <a>65 Dương Tôn Hải, Đà Nẵng</a>
-            <div className="flex gap-4">
-              <button className="button">
-                <Link to="/login">Đăng Nhập</Link>
-              </button>
-              <button className="button2">
-                <Link to="/register">Đăng Ký</Link>
-              </button>
-            </div>
+            {isLogin ? (
+              <div className="flex gap-4 items-center">
+                <span>
+                  <Link to="/profile">{isLogin}</Link>
+                </span>
+                <button className="button" onClick={logOut}>
+                  Đăng Xuất
+                </button>
+              </div>
+            ) : (
+              <div className="flex gap-4">
+                <button className="button">
+                  <Link to="/login">Đăng Nhập</Link>
+                </button>
+                <button className="button2">
+                  <Link to="/register">Đăng Ký</Link>
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
